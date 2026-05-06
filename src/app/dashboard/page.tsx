@@ -16,7 +16,7 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (!user || !profile) return;
-    if (profile.role === "ADMIN") {
+    if (profile.role === "chef") {
       return subscribeToutesFiches(setFiches);
     } else {
       return subscribeFichesOuvrier(user.uid, setFiches);

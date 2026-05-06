@@ -22,7 +22,7 @@ export default function LoginPage() {
       const user = auth.currentUser;
       if (user) {
         const profile = await getUserProfile(user.uid);
-        if (profile?.role === "admin") {
+        if (profile?.role === "chef") {
           router.push("/admin");
         } else {
           router.push("/dashboard");
