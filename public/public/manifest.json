@@ -1,0 +1,9 @@
+{
+  "name": "SteelPose Auto Contrôle",
+  "short_name": "AutoControle",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3a5f",
+  "theme_color": "#1e3a5f",
+  "icons": []
+}
