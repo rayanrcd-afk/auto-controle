@@ -1,6 +1,13 @@
 import {
-  collection, addDoc, updateDoc, doc, query,
-  where, orderBy, onSnapshot, deleteDoc
+  collection,
+  addDoc,
+  updateDoc,
+  doc,
+  query,
+  where,
+  orderBy,
+  onSnapshot,
+  deleteDoc
 } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage } from "./firebase";
@@ -23,22 +30,31 @@ export async function uploadPhoto(file: File, ficheId: string): Promise<string> 
 }
 
 export async function validerFiche(ficheId: string, valide: boolean) {
-  await updateDoc(doc(db, "fiches", ficheId), {
-    statut: valide ? "valide" : "refuse"
-  });
+  if (valide) {
+    await updateDoc(doc(db, "fiches", ficheId), {
+      statut: "validée",
+    });
+  } else {
+    await deleteDoc(doc(db, "fiches", ficheId));
+  }
 }
 
 export function subscribeFichesOuvrier(uid: string, cb: (f: FicheControle[]) => void) {
-  const q = query(collection(db, "fiches"),
-    where("ouvrierUid", "==", uid), orderBy("createdAt", "desc"));
-  return onSnapshot(q, snap =>
-    cb(snap.docs.map(d => ({ ...d.data(), id: d.id } as FicheControle))));
+  const q = query(
+    collection(db, "fiches"),
+    where("ouvrierUid", "==", uid),
+    orderBy("createdAt", "desc")
+  );
+  return onSnapshot(q, (snap) =>
+    cb(snap.docs.map((d) => ({ ...d.data(), id: d.id } as FicheControle)))
+  );
 }
 
 export function subscribeToutesFiches(cb: (f: FicheControle[]) => void) {
   const q = query(collection(db, "fiches"), orderBy("createdAt", "desc"));
-  return onSnapshot(q, snap =>
-    cb(snap.docs.map(d => ({ ...d.data(), id: d.id } as FicheControle))));
+  return onSnapshot(q, (snap) =>
+    cb(snap.docs.map((d) => ({ ...d.data(), id: d.id } as FicheControle)))
+  );
 }
 
 export async function deleteFiche(ficheId: string) {
